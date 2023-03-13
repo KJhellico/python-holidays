@@ -1,6 +1,5 @@
 help:
 	@echo "Usage: make <target>"
-	@echo "    build         build distribution"
 	@echo "    check         run pre-commit and tests"
 	@echo "    coverage      identify code not covered with tests"
 	@echo "    doc           run documentation build process"
@@ -10,10 +9,6 @@ help:
 	@echo "    setup         setup development environment"
 	@echo "    test          run tests (in parallel)"
 	@echo "    tox           run tox (in parallel)"
-
-build:
-	scripts/l10n/generate_mo_files.py
-	python -m build
 
 check:
 	make pre-commit
