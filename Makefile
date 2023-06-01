@@ -3,6 +3,7 @@ help:
 	@echo "    check         run pre-commit and tests"
 	@echo "    coverage      identify code not covered with tests"
 	@echo "    doc           run documentation build process"
+	@echo "    gh-pages      run documentation build process for Github Pages"
 	@echo "    help          show summary of available commands"
 	@echo "    l10n          update .pot and .po files"
 	@echo "    package       build package distribution"
@@ -22,6 +23,9 @@ coverage:
 
 doc:
 	sphinx-build -E -T -W -b html -D language=en -j auto -q docs/source docs/build
+
+gh-pages:
+	sphinx-build -E -T -W -b html -j auto -q docs/source _site
 
 l10n:
 	scripts/l10n/generate_po_files.py 2>/dev/null
