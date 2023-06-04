@@ -52,10 +52,7 @@ extensions = [
     # 'sphinx.ext.viewcode',
     # 'sphinxcontrib.httpdomain',
     "sphinx_rtd_theme",
-    "sphinx_substitution_extensions",
 ]
-
-rst_prolog = ".. |ver| replace:: %s" % version
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
