@@ -28,7 +28,7 @@ gh-pages:
 	sphinx-build -E -T -W -b html -j auto -q docs/source _site
 
 l10n:
-	scripts/l10n/generate_po_files.py 2>/dev/null
+	scripts/l10n/generate_po_files.py >/dev/null 2>&1
 	scripts/l10n/generate_mo_files.py
 
 package:
