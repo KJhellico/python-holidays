@@ -695,13 +695,13 @@ The latest development (beta) version can be installed directly from wheel:
 
 .. code-block:: bash
 
-    $ pip install --upgrade https://kjhellico.github.io/python-holidays/holidays-0.30-py3-none-any.whl
+    $ pip install --upgrade --force-reinstall https://kjhellico.github.io/python-holidays/holidays-0.30-py3-none-any.whl
 
 or tarball:
 
 .. code-block:: bash
 
-    $ pip install --upgrade https://kjhellico.github.io/python-holidays/holidays-0.30.tar.gz
+    $ pip install --upgrade --force-reinstall https://kjhellico.github.io/python-holidays/holidays-0.30.tar.gz
 
 All new features are always first pushed to beta branch, then released on
 master branch upon official version upgrades.
