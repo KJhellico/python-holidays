@@ -14,7 +14,7 @@ from datetime import timedelta as td
 from gettext import gettext as tr
 
 from holidays.calendars import _CustomIslamicCalendar
-from holidays.constants import JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC
+from holidays.calendars.gregorian import JAN, FEB, MAR, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC
 from holidays.holiday_base import HolidayBase
 from holidays.holiday_groups import (
     ChineseCalendarHolidays,
@@ -25,11 +25,7 @@ from holidays.holiday_groups import (
 
 
 class Brunei(
-    HolidayBase,
-    ChineseCalendarHolidays,
-    ChristianHolidays,
-    InternationalHolidays,
-    IslamicHolidays,
+    HolidayBase, ChineseCalendarHolidays, ChristianHolidays, InternationalHolidays, IslamicHolidays
 ):
     """
     A subclass of :py:class:`HolidayBase` representing public holidays in Brunei Darussalam.
@@ -188,12 +184,7 @@ class Brunei(
                 if obs_date:
                     self._add_islamic_calendar_holiday(
                         self.tr("%s - Diperhatikan") % self[hol_date],
-                        (
-                            (
-                                obs_date,
-                                self._year not in BruneiIslamicCalendar.EID_AL_FITR_DATES,
-                            ),
-                        ),
+                        ((obs_date, self._year not in BruneiIslamicCalendar.EID_AL_FITR_DATES),),
                     )
 
         # Hari Raya Aidil Adha

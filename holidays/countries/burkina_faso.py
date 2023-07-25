@@ -13,7 +13,7 @@ from datetime import date
 from datetime import timedelta as td
 
 from holidays.calendars import _CustomIslamicCalendar
-from holidays.constants import JAN, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC
+from holidays.calendars.gregorian import JAN, APR, MAY, JUN, JUL, AUG, SEP, OCT, NOV, DEC
 from holidays.holiday_base import HolidayBase
 from holidays.holiday_groups import ChristianHolidays, InternationalHolidays, IslamicHolidays
 
@@ -113,6 +113,7 @@ class BurkinaFasoIslamicCalendar(_CustomIslamicCalendar):
         2020: (JUL, 31),
         2021: (JUL, 20),
         2022: (JUL, 9),
+        2023: (JUN, 28),
     }
 
     EID_AL_FITR_DATES = {

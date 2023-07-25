@@ -11,7 +11,7 @@
 
 from datetime import date
 
-from holidays.constants import JAN, MAR, MAY, JUN, OCT, NOV, DEC
+from holidays.calendars.gregorian import JAN, MAR, MAY, JUN, OCT, NOV, DEC
 
 
 class InternationalHolidays:
@@ -72,6 +72,22 @@ class InternationalHolidays:
         https://en.wikipedia.org/wiki/International_Workers%27_Day
         """
         return self._add_holiday(name, MAY, 1)
+
+    def _add_labor_day_two(self, name):
+        """
+        Add International Workers' Day Two (May 2nd)
+
+        https://en.wikipedia.org/wiki/International_Workers%27_Day
+        """
+        return self._add_holiday(name, MAY, 2)
+
+    def _add_labor_day_three(self, name):
+        """
+        Add International Workers' Day Three (May 3rd)
+
+        https://en.wikipedia.org/wiki/International_Workers%27_Day
+        """
+        return self._add_holiday(name, MAY, 3)
 
     def _add_new_years_day(self, name) -> date:
         """

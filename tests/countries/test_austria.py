@@ -9,6 +9,7 @@
 #  Website: https://github.com/dr-prodigy/python-holidays
 #  License: MIT (see LICENSE file)
 
+from holidays.constants import BANK
 from holidays.countries.austria import Austria, AT, AUT
 from tests.common import TestCase
 
@@ -26,8 +27,7 @@ class TestAustria(TestCase):
 
     def test_epiphany(self):
         self.assertHolidayName(
-            "Heilige Drei Könige",
-            (f"{year}-01-06" for year in range(1900, 2050)),
+            "Heilige Drei Könige", (f"{year}-01-06" for year in range(1900, 2050))
         )
 
     def test_easter_monday(self):
@@ -47,10 +47,7 @@ class TestAustria(TestCase):
         )
 
     def test_labour_day(self):
-        self.assertHolidayName(
-            "Staatsfeiertag",
-            (f"{year}-05-01" for year in range(1900, 2050)),
-        )
+        self.assertHolidayName("Staatsfeiertag", (f"{year}-05-01" for year in range(1900, 2050)))
 
     def test_ascension_day(self):
         self.assertHolidayName(
@@ -102,8 +99,7 @@ class TestAustria(TestCase):
 
     def test_assumption_day(self):
         self.assertHolidayName(
-            "Mariä Himmelfahrt",
-            (f"{year}-08-15" for year in range(1900, 2050)),
+            "Mariä Himmelfahrt", (f"{year}-08-15" for year in range(1900, 2050))
         )
 
     def test_national_day(self):
@@ -116,28 +112,16 @@ class TestAustria(TestCase):
         self.assertNoHolidayName("Nationalfeiertag", range(1900, 1919), range(1935, 1967))
 
     def test_all_saints_day(self):
-        self.assertHolidayName(
-            "Allerheiligen",
-            (f"{year}-11-01" for year in range(1900, 2050)),
-        )
+        self.assertHolidayName("Allerheiligen", (f"{year}-11-01" for year in range(1900, 2050)))
 
     def test_immaculate_conception_day(self):
-        self.assertHolidayName(
-            "Mariä Empfängnis",
-            (f"{year}-12-08" for year in range(1900, 2050)),
-        )
+        self.assertHolidayName("Mariä Empfängnis", (f"{year}-12-08" for year in range(1900, 2050)))
 
     def test_christmas_day(self):
-        self.assertHolidayName(
-            "Christtag",
-            (f"{year}-12-25" for year in range(1900, 2050)),
-        )
+        self.assertHolidayName("Christtag", (f"{year}-12-25" for year in range(1900, 2050)))
 
     def test_st_stephens_day(self):
-        self.assertHolidayName(
-            "Stefanitag",
-            (f"{year}-12-26" for year in range(1900, 2050)),
-        )
+        self.assertHolidayName("Stefanitag", (f"{year}-12-26" for year in range(1900, 2050)))
 
     def test_2022(self):
         self.assertHolidays(
@@ -157,6 +141,14 @@ class TestAustria(TestCase):
             ("2022-12-26", "Stefanitag"),
         )
 
+    def test_bank_2022(self):
+        self.assertHolidays(
+            Austria(categories=(BANK,), years=2022),
+            ("2022-04-15", "Karfreitag"),
+            ("2022-12-24", "Heiliger Abend"),
+            ("2022-12-31", "Silvester"),
+        )
+
     def test_subdiv(self):
         at_holidays = Austria(subdiv=1)
         self.assertEqual("1", at_holidays.subdiv)
@@ -165,6 +157,7 @@ class TestAustria(TestCase):
         self.assertLocalizedHolidays(
             ("2022-01-01", "Neujahr"),
             ("2022-01-06", "Heilige Drei Könige"),
+            ("2022-04-15", "Karfreitag"),
             ("2022-04-18", "Ostermontag"),
             ("2022-05-01", "Staatsfeiertag"),
             ("2022-05-26", "Christi Himmelfahrt"),
@@ -174,8 +167,10 @@ class TestAustria(TestCase):
             ("2022-10-26", "Nationalfeiertag"),
             ("2022-11-01", "Allerheiligen"),
             ("2022-12-08", "Mariä Empfängnis"),
+            ("2022-12-24", "Heiliger Abend"),
             ("2022-12-25", "Christtag"),
             ("2022-12-26", "Stefanitag"),
+            ("2022-12-31", "Silvester"),
         )
 
     def test_l10n_en_us(self):
@@ -183,6 +178,7 @@ class TestAustria(TestCase):
             "en_US",
             ("2022-01-01", "New Year's Day"),
             ("2022-01-06", "Epiphany"),
+            ("2022-04-15", "Good Friday"),
             ("2022-04-18", "Easter Monday"),
             ("2022-05-01", "Labor Day"),
             ("2022-05-26", "Ascension Day"),
@@ -192,8 +188,10 @@ class TestAustria(TestCase):
             ("2022-10-26", "National Day"),
             ("2022-11-01", "All Saints' Day"),
             ("2022-12-08", "Immaculate Conception"),
+            ("2022-12-24", "Christmas Eve"),
             ("2022-12-25", "Christmas Day"),
             ("2022-12-26", "St. Stephen's Day"),
+            ("2022-12-31", "New Year's Eve"),
         )
 
     def test_l10n_uk(self):
@@ -201,6 +199,7 @@ class TestAustria(TestCase):
             "uk",
             ("2022-01-01", "Новий рік"),
             ("2022-01-06", "Богоявлення"),
+            ("2022-04-15", "Страсна пʼятниця"),
             ("2022-04-18", "Великодній понеділок"),
             ("2022-05-01", "День праці"),
             ("2022-05-26", "Вознесіння Господнє"),
@@ -210,6 +209,8 @@ class TestAustria(TestCase):
             ("2022-10-26", "Національне свято"),
             ("2022-11-01", "День усіх святих"),
             ("2022-12-08", "Непорочне зачаття Діви Марії"),
+            ("2022-12-24", "Святий вечір"),
             ("2022-12-25", "Різдво Христове"),
             ("2022-12-26", "День Святого Стефана"),
+            ("2022-12-31", "Переддень Нового року"),
         )

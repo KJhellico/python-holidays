@@ -1,12 +1,62 @@
-Version 0.28
+Version 0.30
 ============
 
 Released ???????? ??, ????
 
+- Introduce substituted holidays [PoC] (#1365 by @KJhellico)
+- Update Morocco holidays: add fr localization (#1375 by @KJhellico)
+- Update Angola holidays, add l10n support (#1379 by @KJhellico)
+- Update Djibouti holidays, add l10n support (#1374 by @KJhellico)
+- Update Taiwan holidays (#1373 by @KJhellico)
+- Update TestCase::_assertLocalizedHolidays(): add supported_categories holidays (#1376 by @KJhellico)
+- Update some URLs after moving to an organization (#1387 by @arkid15r)
+- Add Python 3.12.0-beta.4 environment (#1385 by @arkid15r)
+- Extend `HolidayBase::_add_holiday` methods family [PoC] (#1368 by @arkid15r)
+
+Version 0.29
+============
+
+Released July 17, 2023
+
+- Refactor movable holidays (#1357 by @KJhellico)
+- Add Guatemala holidays (#1364 by @aztrock)
+- Add Arabic localization (#1341 by @abh31000)
+- Optimize .po files update process (#1372 by @KJhellico)
+- Optimize HolidayBase::get_named() method (#1366 by @KJhellico)
+- Update .po files format: remove location comments (#1362 by @KJhellico)
+- Update Algeria holidays: add missing file headers (#1363 by @arkid15r, @KJhellico)
+- Update Eid-al-Adha 2023 exact dates (#1361 by @KJhellico)
+- Update InternationalHolidays group: add May 2 and 3 (#1367 by @KJhellico)
+- Update Ireland holidays: finish migration to holiday groups (#1350 by @KJhellico)
+- Update United Kingdom holidays: update certain holidays start years (#1353 by @KJhellico)
+- Migrate Bangladesh and Russia to holiday groups (#1371 by @KJhellico)
+- Migrate Belgium and Luxembourg to holiday groups, add l10n support (#1343 by @KJhellico)
+- Migrate Bulgaria holidays to holiday groups and categories (#1351 by @KJhellico)
+- Migrate Croatia, Czechia and Slovenia to holiday groups, add l10n support (#1344 by @KJhellico)
+
+Version 0.28
+============
+
+Released July 3, 2023
+
+- Add special holidays categories support (#1347 by @KJhellico)
+- Introduce holiday categories support (#1320 by @KJhellico)
+- Fix Marshall Islands tests warning (#1354 by @KJhellico)
 - Fix common::TestCase methods (#1324 by @KJhellico)
+- Optimize .py files formatting (#1332 by @KJhellico)
+- Optimize .py files formatting (tests) (#1337 by @KJhellico)
+- Update Baltic countries holidays, add l10n support (#1340 by @KJhellico)
+- Update Bosnia and Herzegovina holidays, add l10n support (#1336 by @KJhellico)
 - Update PR template (#1330 by @arkid15r)
 - Update configuration files (#1327 by @arkid15r)
+- Add HolidayBase methods for relative weekdays calculation (#1334 by @KJhellico)
+- Clean up calendars (#1349 by @arkid15r)
 - Drop Python 3.7 support (#1326 by @arkid15r)
+- Migrate Ireland holidays to holiday groups (#1333 by @KJhellico)
+- Migrate Madagascar to holiday groups, add l10n support (#1335 by @KJhellico)
+- Migrate Malta to `holiday_groups`, add l10n support (#1338 by @PPsyrius, @arkid15r)
+- Migrate Marshall Islands to `holiday_groups` (#1342 by @PPsyrius)
+- Migrate United States holidays to holiday groups and subdivision holidays methods (#1331 by @KJhellico)
 - Remove redundant `#noqa E501` labels (#1322 by @PPsyrius)
 
 Version 0.27.1

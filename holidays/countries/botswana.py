@@ -12,8 +12,7 @@
 from datetime import date
 from datetime import timedelta as td
 
-from holidays.calendars import _get_nth_weekday_of_month
-from holidays.constants import JUL, SEP, MON
+from holidays.calendars.gregorian import JUL, SEP, MON
 from holidays.holiday_base import HolidayBase
 from holidays.holiday_groups import ChristianHolidays, InternationalHolidays
 
@@ -56,12 +55,12 @@ class Botswana(HolidayBase, ChristianHolidays, InternationalHolidays):
         may_1 = self._add_labor_day("Labour Day")
         self._add_observed(may_1)
         if self.observed and year >= 2016 and self._is_saturday(may_1):
-            self._add_holiday("Labour Day Holiday", may_1 + td(days=+2))
+            self._add_labor_day_three("Labour Day Holiday")
 
         self._add_observed(self._add_holiday("Sir Seretse Khama Day", JUL, 1))
 
         july_3rd_monday = self._add_holiday(
-            "President's Day", _get_nth_weekday_of_month(3, MON, JUL, year)
+            "President's Day", self._get_nth_weekday_of_month(3, MON, JUL)
         )
         self._add_holiday("President's Day Holiday", july_3rd_monday + td(days=+1))
 

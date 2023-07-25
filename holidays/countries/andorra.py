@@ -9,11 +9,8 @@
 #  Website: https://github.com/dr-prodigy/python-holidays
 #  License: MIT (see LICENSE file)
 
-from datetime import date
 from datetime import timedelta as td
 
-from holidays.calendars import _get_nth_weekday_from, _get_nth_weekday_of_month
-from holidays.constants import MAR, JUL, AUG, SEP, FRI, SAT
 from holidays.holiday_base import HolidayBase
 from holidays.holiday_groups import ChristianHolidays, InternationalHolidays
 
@@ -54,7 +51,7 @@ class Andorra(HolidayBase, ChristianHolidays, InternationalHolidays):
         self._add_carnival_tuesday("Carnival")
 
         # Constitution Day.
-        self._add_holiday("Constitution Day", MAR, 14)
+        self._add_holiday_mar_14("Constitution Day")
 
         # Good Friday.
         self._add_good_friday("Good Friday")
@@ -72,7 +69,7 @@ class Andorra(HolidayBase, ChristianHolidays, InternationalHolidays):
         self._add_assumption_of_mary_day("Assumption Day")
 
         # National Day.
-        self._add_holiday("National Day", SEP, 8)
+        self._add_holiday_sep_8("National Day")
 
         # All Saints' Day.
         self._add_all_saints_day("All Saints' Day")
@@ -89,34 +86,32 @@ class Andorra(HolidayBase, ChristianHolidays, InternationalHolidays):
     # Canillo.
     def _add_subdiv_02_holidays(self):
         name = "Canillo Annual Festival"
-        third_sat_of_july = _get_nth_weekday_of_month(3, SAT, JUL, self._year)
-        self._add_holiday(name, third_sat_of_july)
+        third_sat_of_july = self._add_holiday_3rd_sat_of_jul(name)
         self._add_holiday(name, third_sat_of_july + td(days=+1))
         self._add_holiday(name, third_sat_of_july + td(days=+2))
 
     # Encamp.
     def _add_subdiv_03_holidays(self):
         name = "Encamp Annual Festival"
-        aug_15 = self._add_holiday(name, AUG, 15)
+        aug_15 = self._add_holiday_aug_15(name)
         self._add_holiday(name, aug_15 + td(days=+1))
 
     # La Massana.
     def _add_subdiv_04_holidays(self):
         name = "La Massana Annual Festival"
-        aug_15 = self._add_holiday(name, AUG, 15)
+        aug_15 = self._add_holiday_aug_15(name)
         self._add_holiday(name, aug_15 + td(days=+1))
 
     # Ordino.
     def _add_subdiv_05_holidays(self):
         name = "Ordino Annual Festival"
-        aug_15 = self._add_holiday(name, AUG, 15)
+        aug_15 = self._add_holiday_aug_15(name)
         self._add_holiday(name, aug_15 + td(days=+1))
 
     # Sant Julià de Lòria.
     def _add_subdiv_06_holidays(self):
         name = "Sant Julià de Lòria Annual Festival"
-        last_fri_of_july = _get_nth_weekday_from(-1, FRI, date(self._year, JUL, 29))
-        self._add_holiday(name, last_fri_of_july)
+        last_fri_of_july = self._add_holiday_1st_fri_before_jul_29(name)
         self._add_holiday(name, last_fri_of_july + td(days=+1))
         self._add_holiday(name, last_fri_of_july + td(days=+2))
         self._add_holiday(name, last_fri_of_july + td(days=+3))
@@ -124,15 +119,14 @@ class Andorra(HolidayBase, ChristianHolidays, InternationalHolidays):
     # Andorra la Vella.
     def _add_subdiv_07_holidays(self):
         name = "Andorra la Vella Annual Festival"
-        first_sat_of_august = _get_nth_weekday_of_month(1, SAT, AUG, self._year)
-        self._add_holiday(name, first_sat_of_august)
+        first_sat_of_august = self._add_holiday_1st_sat_of_aug(name)
         self._add_holiday(name, first_sat_of_august + td(days=+1))
         self._add_holiday(name, first_sat_of_august + td(days=+2))
 
     # Escaldes-Engordany.
     def _add_subdiv_08_holidays(self):
         name = "Escaldes-Engordany Annual Festival"
-        jul_25 = self._add_holiday(name, JUL, 25)
+        jul_25 = self._add_holiday_jul_25(name)
         self._add_holiday(name, jul_25 + td(days=+1))
 
 
