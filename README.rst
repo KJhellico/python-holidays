@@ -200,7 +200,7 @@ The list of supported countries, their subdivisions and supported languages
    * - Bolivia
      - BO
      - Departments: B, C, H, L, N, O, P, S, T
-     -
+     - en_US, **es**, uk
    * - Bosnia and Herzegovina
      - BA
      - Entities and district: BIH, BRC, SRP
@@ -332,7 +332,7 @@ The list of supported countries, their subdivisions and supported languages
    * - Georgia
      - GE
      -
-     - en_US, **ka**
+     - en_US, **ka**, uk
    * - Germany
      - DE
      - States: BB, BE, BW, BY, BYP, HB, HE, HH, MV, NI, NW, RP, SH, SL, SN, ST, TH
@@ -340,7 +340,7 @@ The list of supported countries, their subdivisions and supported languages
    * - Greece
      - GR
      -
-     - **el**, en_US
+     - **el**, en_US, uk
    * - Guam
      - GU
      - Can also be loaded as country US, subdivision GU
@@ -372,7 +372,7 @@ The list of supported countries, their subdivisions and supported languages
    * - Indonesia
      - ID
      -
-     -
+     - en_US, **id**, uk
    * - Ireland
      - IE
      -
@@ -472,7 +472,7 @@ The list of supported countries, their subdivisions and supported languages
    * - Mozambique
      - MZ
      -
-     -
+     - en_US, **pt_MZ**, uk
    * - Namibia
      - NA
      -

@@ -240,8 +240,12 @@ class TestBasics(unittest.TestCase):
         self.assertIn(date(2015, 12, 25), h)
 
     def test_is_leap_year(self):
-        self.assertTrue(holidays.HolidayBase._is_leap_year(2000))
-        self.assertFalse(holidays.HolidayBase._is_leap_year(2100))
+        instance = holidays.HolidayBase()
+        instance._populate(2000)
+        self.assertTrue(instance._is_leap_year())
+
+        instance._populate(2100)
+        self.assertFalse(instance._is_leap_year())
 
     def test_is_weekend(self):
         h = holidays.HolidayBase()
@@ -816,6 +820,32 @@ class TestCountrySpecialHolidays(unittest.TestCase):
         self.assertIn("2222-02-02", self.us_holidays)
         self.assertIn("3333-02-02", self.us_holidays)
         self.assertEqual(26, len(self.us_holidays))
+
+
+class TestCountrySubstitutedHolidays(unittest.TestCase):
+    def setUp(self):
+        self.at_holidays = holidays.country_holidays("AT")
+        self.ua_holidays = holidays.country_holidays("UA", language="en_US")
+
+    def test_populate_substituted_holidays(self):
+        self.ua_holidays.substituted_holidays = {
+            1991: (
+                (JAN, 12, JAN, 7),
+                (1991, JAN, 13, JAN, 8),
+            ),
+        }
+        self.ua_holidays._populate(1991)
+        self.assertIn("1991-01-07", self.ua_holidays)
+        self.assertIn("1991-01-08", self.ua_holidays)
+        self.assertIn("01/12/1991", self.ua_holidays["1991-01-07"])
+        self.assertIn("01/13/1991", self.ua_holidays["1991-01-08"])
+
+        self.at_holidays.substituted_holidays = {
+            1991: (JAN, 12, JAN, 7),
+        }
+        self.assertRaises(ValueError, lambda: self.at_holidays._populate(1991))
+        self.at_holidays.substituted_label = "From %s"
+        self.assertRaises(ValueError, lambda: self.at_holidays._populate(1991))
 
 
 class TestHolidaysTranslation(unittest.TestCase):
