@@ -10,9 +10,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4.7.0
-      - uses: browniebroke/pre-commit-autoupdate-action@v1.0.0
-      - uses: peter-evans/create-pull-request@v5.0.2
+      - name: Set Up Python
+        uses: actions/setup-python@v4.7.0
+        with:
+          python-version: '3.11'
+      - name: Install pre-commit and autoupdate
+        run: |
+          python -m pip install pre-commit
+          pre-commit autoupdate
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5.0.2
         with:
           base: beta
           branch: update/pre-commit-hooks
@@ -21,4 +28,4 @@ jobs:
           commit-message: "Chore: Update pre-commit hooks"
           committer: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
           body: Update versions of pre-commit hooks to latest version.
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT }}
