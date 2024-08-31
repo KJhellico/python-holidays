@@ -9,7 +9,7 @@ on:
 jobs:
   update-snapshots:
     name: Update snapshots
-    if: github.repository == 'vacanza/python-holidays'
+#    if: github.repository == 'vacanza/python-holidays'
     permissions:
       contents: write
       pull-requests: write
@@ -33,8 +33,8 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements/build.txt
           python -m pip install -r requirements/dev.txt
-          make package
-          python -m pip install dist/*.tar.gz
+#          make package
+#          python -m pip install dist/*.tar.gz
 
       - name: Generate snapshots
         run: |
