@@ -211,8 +211,8 @@ class Malaysia(
 
     def _populate_subdiv_holidays(self):
         if self.subdiv and self.subdiv not in {"13", "15"}:
-            # Deepavali (Malaysia-specific).
-            self.dts_observed.add(self._add_diwali(tr("Hari Deepavali"), malaysia=True))
+            # Deepavali.
+            self.dts_observed.add(self._add_diwali(tr("Hari Deepavali")))
 
         super()._populate_subdiv_holidays()
 

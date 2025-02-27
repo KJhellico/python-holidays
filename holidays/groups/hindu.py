@@ -36,15 +36,11 @@ class HinduCalendarHolidays(EasternCalendarHolidays):
         is an estimation.
         """
 
-        """Ensure holiday is added only if date exists."""
-        dt, is_estimated = dt_estimated
-        if dt is None:
-            return None  # Avoid adding invalid holidays
         return self._add_eastern_calendar_holiday(
             name, dt_estimated, self._hindu_calendar_show_estimated
         )
 
-    def _add_diwali(self, name, malaysia: bool = False) -> Optional[date]:
+    def _add_diwali(self, name) -> Optional[date]:
         """
         Add Diwali Festival.
 
@@ -54,11 +50,12 @@ class HinduCalendarHolidays(EasternCalendarHolidays):
         mid-November).
         https://en.wikipedia.org/wiki/Diwali
         """
-        if malaysia:
-            return self._add_hindu_calendar_holiday(
-                name, self._hindu_calendar.malaysia_deepavali_date(self._year)
-        )
         return self._add_hindu_calendar_holiday(name, self._hindu_calendar.diwali_date(self._year))
+
+    def _add_diwali_india(self, name) -> Optional[date]:
+        return self._add_hindu_calendar_holiday(
+            name, self._hindu_calendar.diwali_india_date(self._year)
+        )
 
     def _add_thaipusam(self, name) -> Optional[date]:
         """
@@ -68,7 +65,6 @@ class HinduCalendarHolidays(EasternCalendarHolidays):
         of the Tamil month of Thai (January/February).
         https://en.wikipedia.org/wiki/Thaipusam
         """
-        print(f"Adding {name} for year {self._year}") 
         return self._add_hindu_calendar_holiday(
             name, self._hindu_calendar.thaipusam_date(self._year)
         )
