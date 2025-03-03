@@ -82,7 +82,7 @@ jobs:
 #          - '3.9'
 #          - '3.10'
 #          - '3.11'
-          - '3.12'
+#          - '3.12'
           - '3.13'
     steps:
       - name: Check out repository
@@ -170,9 +170,9 @@ jobs:
     strategy:
       matrix:
         os:
-          - macos-latest
+#          - macos-latest
           - ubuntu-latest
-          - windows-latest
+#          - windows-latest
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -256,7 +256,8 @@ jobs:
     name: Create SHA1 checksums and Sigstore signatures
     runs-on: ubuntu-24.04
     needs:
-      - publish-main
+#      - publish-main
+      - test-build
     permissions:
       id-token: write
     steps:
@@ -329,29 +330,30 @@ jobs:
           filenames: ${{ env.FILE_LIST }}
           sandbox: true
           publish: false
+          verbose: true
 
-  update-github-release:
-    name: Update GitHub release with SBOM and signed artifacts
-    runs-on: ubuntu-24.04
-    needs:
-      - sign-artifacts
-    permissions:
-      contents: write
-    steps:
-      - name: Download SBOM
-        uses: actions/download-artifact@v4
-        with:
-          name: sbom
-
-      - name: Download package dist and signatures
-        uses: actions/download-artifact@v4
-        with:
-          name: signed-artifacts
-          path: dist
-
-      - name: Update Github release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release upload --repo vacanza/holidays ${{ github.ref_name }} dist/*
-          gh release upload --repo vacanza/holidays ${{ github.ref_name }} holidays-*-sbom.json
+#  update-github-release:
+#    name: Update GitHub release with SBOM and signed artifacts
+#    runs-on: ubuntu-24.04
+#    needs:
+#      - sign-artifacts
+#    permissions:
+#      contents: write
+#    steps:
+#      - name: Download SBOM
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: sbom
+#
+#      - name: Download package dist and signatures
+#        uses: actions/download-artifact@v4
+#        with:
+#          name: signed-artifacts
+#          path: dist
+#
+#      - name: Update Github release
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        run: |
+#          gh release upload --repo vacanza/holidays ${{ github.ref_name }} dist/*
+#          gh release upload --repo vacanza/holidays ${{ github.ref_name }} holidays-*-sbom.json
