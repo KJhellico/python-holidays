@@ -116,7 +116,8 @@ jobs:
 
   build:
     name: Build distribution
-    needs: test
+#    needs: test
+    needs: pre-commit
     runs-on: ubuntu-24.04
     steps:
       - name: Check out repository
@@ -316,7 +317,8 @@ jobs:
       - name: List dist
         run: |
           ls -l dist
-          files=$(echo dist/*.tar.gz dist/*.whl)
+          mv dist/*.tar.gz dist/*.whl .
+          files=$(echo *.tar.gz *.whl)
           echo $files
           echo "FILE_LIST=$files" >> $GITHUB_ENV
 
