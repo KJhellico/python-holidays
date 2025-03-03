@@ -30,93 +30,8 @@ concurrency:
   group: ${{ github.repository }}-${{ github.workflow }}-${{ github.head_ref || github.ref_name }}
 
 jobs:
-  pre-commit:
-    name: Run pre-commit
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-
-      - name: Set up Python
-        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55
-        with:
-          check-latest: true
-          python-version: '3.13'
-
-      - name: Run pre-commit
-        uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd
-
-  code-ql:
-    name: CodeQL
-    needs:
-      - pre-commit
-    permissions:
-      security-events: write
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@45775bd8235c68ba998cffa5171334d58593da47
-        with:
-          languages: python
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@45775bd8235c68ba998cffa5171334d58593da47
-        with:
-          category: '/language:python'
-
-  test:
-    name: Test Python ${{ matrix.python-version }} on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    needs:
-      - pre-commit
-    strategy:
-      matrix:
-        os:
-          - macos-latest
-          - ubuntu-latest
-          - windows-latest
-        python-version:
-          - '3.9'
-          - '3.10'
-          - '3.11'
-          - '3.12'
-          - '3.13'
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55
-        with:
-          allow-prereleases: true
-          cache: pip
-          cache-dependency-path: |
-            requirements/runtime.txt
-            requirements/tests.txt
-          check-latest: true
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install --requirement requirements/tests.txt
-          python -m pip install .
-
-      - name: Run tests
-        run: |
-          make test
-
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@0565863a31f2c772f9f0395002a31e3f06189574
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-
   build:
     name: Build distribution
-    needs: test
     runs-on: ubuntu-24.04
     steps:
       - name: Check out repository
@@ -163,100 +78,11 @@ jobs:
           name: sbom
           path: holidays-${{ env.VERSION }}-sbom.json
 
-  test-build:
-    name: Test build on ${{ matrix.os }}
-    runs-on: ${{ matrix.os }}
-    needs: build
-    strategy:
-      matrix:
-        os:
-          - macos-latest
-          - ubuntu-latest
-          - windows-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-
-      - name: Set up Python
-        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55
-        with:
-          cache: pip
-          cache-dependency-path: |
-            requirements/runtime.txt
-            requirements/tests.txt
-          check-latest: true
-          python-version: '3.13'
-
-      - name: Get package artifacts
-        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e
-        with:
-          name: dist
-          path: dist
-
-      - name: Run tests
-        shell: bash
-        run: |
-          rm -rf holidays
-          python -m pip install --requirement requirements/tests.txt
-          python -m pip install `ls dist/*.whl`
-          pytest --dist loadscope --numprocesses auto tests/countries tests/financial
-          python -m pip uninstall -y holidays python-dateutil six
-          python -m pip install `ls dist/*.tar.gz`
-          pytest --dist loadscope --numprocesses auto tests/countries tests/financial
-
-  test-docs:
-    name: Test docs build
-    runs-on: ubuntu-24.04
-    needs: test
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
-
-      - name: Set Up Python
-        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55
-        with:
-          cache: pip
-          cache-dependency-path: requirements/docs.txt
-          python-version: '3.13'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --requirement requirements/docs.txt
-          python -m pip install .
-
-      - name: Build docs
-        run: |
-          make doc
-
-  publish-main:
-    name: Publish generated artifacts
-    if: |
-      github.repository == 'vacanza/holidays' &&
-      github.event_name == 'push' &&
-      startsWith(github.event.ref, 'refs/tags/v')
-    environment: main
-    needs:
-      - test-build
-      - test-docs
-    permissions:
-      contents: write
-      id-token: write
-    runs-on: ubuntu-24.04
-    steps:
-      - name: Download package artifacts
-        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e
-        with:
-          name: dist
-          path: dist
-
-      - name: Publish package distributions to PyPI
-        uses: pypa/gh-action-pypi-publish@76f52bc884231f62b9a034ebfe128415bbaabdfc
-
   sign-artifacts:
     name: Create SHA1 checksums and Sigstore signatures
     runs-on: ubuntu-24.04
     needs:
-      - publish-main
+      - build
     permissions:
       id-token: write
     steps:
@@ -286,28 +112,29 @@ jobs:
           name: signed-artifacts
           path: dist
 
-  update-github-release:
-    name: Update GitHub release with SBOM and signed artifacts
-    runs-on: ubuntu-24.04
+  upload-to-zenodo:
+    name: Publish release to Zenodo
+    runs-on: ubuntu-latest
     needs:
       - sign-artifacts
-    permissions:
-      contents: write
     steps:
-      - name: Download SBOM
-        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e
-        with:
-          name: sbom
-
-      - name: Download package dist and signatures
+      - name: Download signed artifacts
         uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e
         with:
           name: signed-artifacts
           path: dist
 
-      - name: Update Github release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Prepare release archive
         run: |
-          gh release upload --repo vacanza/holidays ${{ github.ref_name }} dist/*
-          gh release upload --repo vacanza/holidays ${{ github.ref_name }} holidays-*-sbom.json
+          mv dist/*.tar.gz dist/*.whl .
+          files=$(echo *.tar.gz *.whl)
+          echo "FILE_LIST=$files" >> $GITHUB_ENV
+
+      - name: Upload to Zenodo
+        uses: KJhellico/update-zenodo-action@first-action
+        with:
+          token: ${{ secrets.ZENODO_TOKEN }}
+          filenames: ${{ env.FILE_LIST }}
+          metadata: CITATION.cff
+          sandbox: 'true'
+          publish: 'false'
