@@ -22,7 +22,7 @@ repos:
     hooks:
       - id: test-po
         always_run: true
-        entry: make l10n
+        entry: make check-po
         language: system
-        name: run `make l10n`
+        name: run `make check-po`
         pass_filenames: false

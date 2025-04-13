@@ -17,6 +17,10 @@ check:
 	make doc
 	make test
 
+check-po:
+	scripts/l10n/generate_po_files.py
+	git diff
+
 clean:
 	find . -name *.mo -delete
 	find . -name *.pyc -delete
