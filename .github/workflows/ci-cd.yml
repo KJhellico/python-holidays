@@ -43,18 +43,48 @@ jobs:
           check-latest: true
           python-version: '3.13'
 
+      - name: Run pre-commit
+        uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd
+
+  po-check:
+    name: Check .po files on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os:
+          - macos-latest
+          - ubuntu-latest
+          - windows-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Set up Python
+        uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55
+        with:
+          cache: pip
+          cache-dependency-path: |
+            requirements/runtime.txt
+            requirements/dev.txt
+          check-latest: true
+          python-version: '3.13'
+
       - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
           python -m pip install -r requirements/dev.txt
           python -m pip install .
 
-      - name: Run pre-commit
-        uses: pre-commit/action@2c7b3805fd2a0fd8c1884dcaebf91fc102a13ecd
+      - name: Run tests
+        shell: bash
+        run: |
+          scripts/l10n/generate_po_files.py
+          git diff
 
   code-ql:
     name: CodeQL
     needs:
-      - pre-commit
+      - po-check
     permissions:
       security-events: write
     runs-on: ubuntu-24.04
@@ -76,7 +106,7 @@ jobs:
     name: Test Python ${{ matrix.python-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs:
-      - pre-commit
+      - po-check
     strategy:
       matrix:
         os:
