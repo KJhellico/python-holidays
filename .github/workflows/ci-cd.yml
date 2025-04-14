@@ -140,4 +140,4 @@ jobs:
           filenames: ${{ env.FILE_LIST }}
           metadata: CITATION.cff
           sandbox: 'true'
-          publish: 'false'
+          publish: 'true'
