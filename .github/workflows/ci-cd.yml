@@ -134,10 +134,10 @@ jobs:
           echo "FILE_LIST=$files" >> $GITHUB_ENV
 
       - name: Upload to Zenodo
-        uses: KJhellico/update-zenodo-action@first-action
+        uses: Prateekshit73/update-zenodo@test-zenodo
         with:
           token: ${{ secrets.ZENODO_TOKEN }}
           filenames: ${{ env.FILE_LIST }}
           metadata: CITATION.cff
           sandbox: 'true'
-          publish: 'true'
+          publish: 'false'
