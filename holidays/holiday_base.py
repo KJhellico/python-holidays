@@ -13,13 +13,14 @@
 __all__ = ("DateLike", "HolidayBase", "HolidaySum")
 
 import copy
+import os
 import warnings
 from bisect import bisect_left, bisect_right
 from calendar import isleap
 from collections.abc import Iterable
 from datetime import date, datetime, timedelta, timezone
 from functools import cached_property
-from gettext import gettext, translation
+from gettext import NullTranslations, translation
 from pathlib import Path
 from typing import Any, Literal, Optional, Union, cast
 
@@ -783,25 +784,26 @@ class HolidayBase(dict[date, str]):
 
     def _init_translation(self) -> None:
         """Initialize translation function based on language settings."""
-        supported_languages = set(self.supported_languages)
-        if self._entity_code is not None:
-            # Determine translation language: explicit setting first, then default.
-            # This logic is used to ensure that the language is set correctly for child entities
-            # in case they have a different language than their parent entity.
-            is_supported_language = self.language in supported_languages
-            if self.language and is_supported_language:
+        if self._entity_code is not None and self.default_language:
+            if self.language in self.supported_languages:
                 languages = [self.language]
-            elif self.default_language:
-                languages = [self.default_language]
             else:
-                languages = None
+                languages = next(
+                    (
+                        val
+                        for envar in ("LANGUAGE", "LC_ALL", "LC_MESSAGES", "LANG")
+                        if (val := os.environ.get(envar))
+                    ),
+                    "",
+                ).split(":")
+                languages.append(self.default_language)
 
             locale_directory = str(Path(__file__).with_name("locale"))
 
             # Add entity native content translations.
             entity_translation = translation(
                 self._entity_code,
-                fallback=not is_supported_language,
+                fallback=True,
                 languages=languages,
                 localedir=locale_directory,
             )
@@ -810,14 +812,14 @@ class HolidayBase(dict[date, str]):
                 entity_translation.add_fallback(
                     translation(
                         parent_entity.country or parent_entity.market,
-                        fallback=not is_supported_language,
+                        fallback=True,
                         languages=languages,
                         localedir=locale_directory,
                     )
                 )
             self.tr = entity_translation.gettext
         else:
-            self.tr = gettext
+            self.tr = NullTranslations().gettext
 
     def _is_leap_year(self) -> bool:
         """

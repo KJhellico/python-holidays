@@ -34,6 +34,24 @@ class TestLocalization(unittest.TestCase):
         pl_xx = holidays.country_holidays("PL", language="xx")
         self.assertEqual(pl_xx["2022-01-01"], "Nowy Rok")
 
+    @mock.patch.dict(os.environ, {"LANGUAGE": "en_US"})
+    def test_no_language_en_us(self):
+        """Language supported by the entity."""
+        self.assertEqual(os.environ["LANGUAGE"], "en_US")
+        fi = holidays.country_holidays("FI")
+        self.assertEqual(fi["2022-01-01"], "New Year's Day")
+        ax = holidays.country_holidays("AX")
+        self.assertEqual(ax["2022-01-01"], "New Year's Day")
+
+    @mock.patch.dict(os.environ, {"LANGUAGE": "es"})
+    def test_no_language_es(self):
+        """Language not supported by the entity."""
+        self.assertEqual(os.environ["LANGUAGE"], "es")
+        fi = holidays.country_holidays("FI")
+        self.assertEqual(fi["2022-01-01"], "Uudenvuodenpäivä")
+        ax = holidays.country_holidays("AX")
+        self.assertEqual(ax["2022-01-01"], "Nyårsdagen")
+
     def test_localization(self):
         tests_dir = Path(__file__).parent
         locale_dir = tests_dir.parent / "holidays" / "locale"
