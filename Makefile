@@ -8,7 +8,6 @@ help:
 	@echo "    pre-commit    run pre-commit against all files"
 	@echo "    setup         setup development environment"
 	@echo "    test          run tests (in parallel)"
-	@echo "    tox           run tox (in parallel)"
 
 check:
 	make l10n
@@ -25,14 +24,17 @@ clean:
 doc:
 	mkdocs build
 
+generate-mo:
+	uv run --no-default-groups --group build scripts/l10n/generate_mo_files.py
+
 l10n:
 	find . -type f -name "*.pot" -delete
-	scripts/l10n/generate_po_files.py >/dev/null 2>&1
-	scripts/l10n/generate_mo_files.py
+	uv run scripts/l10n/generate_po_files.py >/dev/null 2>&1
+	make generate-mo
 
 package:
-	scripts/l10n/generate_mo_files.py
-	python -m build
+	make generate-mo
+	uv build
 
 pre-commit:
 	pre-commit run --all-files
@@ -41,26 +43,22 @@ release-notes:
 	@scripts/generate_release_notes.py
 
 sbom:
-	@python -m cyclonedx_py requirements requirements/runtime.txt
+	uv tool run --from cyclonedx-bom cyclonedx-py requirements requirements/runtime.txt
 
 setup:
-	pip install --upgrade pip
-	pip install --requirement requirements/dev.txt
-	pip install --requirement requirements/docs.txt
-	pip install --requirement requirements/runtime.txt
-	pip install --requirement requirements/tests.txt
+	curl -LsSf https://astral.sh/uv/install.sh | sh
+	uv venv
+	uv sync --all-groups
+	uv tool install pre-commit --with pre-commit-uv
 	pre-commit install --hook-type pre-commit
 	pre-commit install --hook-type pre-push
 	make l10n
 	make package
 
 snapshot:
-	scripts/l10n/generate_mo_files.py
-	scripts/generate_snapshots.py
+	make generate-mo
+	uv run scripts/generate_snapshots.py
 
 test:
-	scripts/l10n/generate_mo_files.py
+	make generate-mo
 	pytest --cov=. --cov-config=pyproject.toml --cov-report term-missing --cov-report xml --durations 10 --durations-min=0.75 --dist loadscope --no-cov-on-fail --numprocesses auto
-
-tox:
-	tox --parallel auto

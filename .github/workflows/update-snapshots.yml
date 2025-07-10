@@ -9,7 +9,7 @@ on:
 jobs:
   update-snapshots:
     name: Update snapshots
-    if: github.repository == 'vacanza/holidays'
+#    if: github.repository == 'vacanza/holidays'
     permissions:
       contents: write
       pull-requests: write
@@ -18,33 +18,28 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8
 
-      - name: Set up Python
-        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c
+      - name: Install uv
+        uses: astral-sh/setup-uv@bd01e18f51369d5a26f1651c3cb451d3417e3bba
         with:
-          cache: pip
-          cache-dependency-path: |
-            requirements/build.txt
-            requirements/runtime.txt
-          check-latest: true
+          activate-environment: true
           python-version: '3.14'
+          version: '0.9.9'
 
-      - name: Install dependencies
+      - name: Install project
         run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements/build.txt
-          python -m pip install -r requirements/runtime.txt
+          uv sync --locked --no-default-groups --group build
 
       - name: Generate snapshots
         run: |
           make snapshot
 
-      - uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e
-        with:
-          base: dev
-          body: Automatically generated snapshots update.
-          branch: update-snapshots
-          commit-message: 'Update snapshots [skip ci]'
-          committer: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
-          delete-branch: true
-          title: 'chore: Update snapshots'
-          token: ${{ github.token }}
+#      - uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e
+#        with:
+#          base: dev
+#          body: Automatically generated snapshots update.
+#          branch: update-snapshots
+#          commit-message: 'Update snapshots [skip ci]'
+#          committer: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
+#          delete-branch: true
+#          title: 'chore: Update snapshots'
+#          token: ${{ github.token }}

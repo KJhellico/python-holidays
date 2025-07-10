@@ -99,7 +99,6 @@ exclude_lines = [
 
 [tool.coverage.run]
 branch = true
-omit = [ "scripts/*", "tests/*" ]
 
 [[tool.mypy.overrides]]
 module = "holidays.countries.*"
