@@ -31,7 +31,7 @@ l10n:
 	scripts/l10n/generate_mo_files.py
 
 package:
-	scripts/l10n/generate_mo_files.py
+	python scripts/l10n/generate_mo_files.py
 	uv build
 
 pre-commit:
@@ -41,7 +41,7 @@ release-notes:
 	@scripts/generate_release_notes.py
 
 sbom:
-	@python -m cyclonedx_py requirements requirements/runtime.txt
+	uv tool run cyclonedx_py requirements requirements/runtime.txt
 
 setup:
 	curl -LsSf https://astral.sh/uv/install.sh | sh
@@ -58,7 +58,7 @@ snapshot:
 	scripts/generate_snapshots.py
 
 test:
-	scripts/l10n/generate_mo_files.py
+	python scripts/l10n/generate_mo_files.py
 	pytest --cov=. --cov-config=pyproject.toml --cov-report term-missing --cov-report xml --durations 10 --durations-min=0.75 --dist loadscope --no-cov-on-fail --numprocesses auto
 
 tox:

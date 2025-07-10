@@ -92,6 +92,9 @@ version = { attr = "holidays.version.__version__" }
 include = ["holidays*"]
 
 [dependency-groups]
+build = [
+    "polib==1.2.0",
+]
 dev = [
     "convertdate==2.4.0",
     "gitpython==3.1.44",

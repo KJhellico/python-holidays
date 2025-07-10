@@ -435,6 +435,9 @@ dependencies = [
 ]
 
 [package.dev-dependencies]
+build = [
+    { name = "polib" },
+]
 dev = [
     { name = "convertdate" },
     { name = "gitpython" },
@@ -469,6 +472,7 @@ tests = [
 requires-dist = [{ name = "python-dateutil" }]
 
 [package.metadata.requires-dev]
+build = [{ name = "polib", specifier = "==1.2.0" }]
 dev = [
     { name = "convertdate", specifier = "==2.4.0" },
     { name = "gitpython", specifier = "==3.1.44" },
