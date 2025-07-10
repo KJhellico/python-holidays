@@ -32,7 +32,7 @@ l10n:
 
 package:
 	scripts/l10n/generate_mo_files.py
-	python -m build
+	uv build
 
 pre-commit:
 	pre-commit run --all-files
@@ -44,11 +44,10 @@ sbom:
 	@python -m cyclonedx_py requirements requirements/runtime.txt
 
 setup:
-	pip install --upgrade pip
-	pip install --requirement requirements/dev.txt
-	pip install --requirement requirements/docs.txt
-	pip install --requirement requirements/runtime.txt
-	pip install --requirement requirements/tests.txt
+	curl -LsSf https://astral.sh/uv/install.sh | sh
+	uv venv
+	uv sync --all-groups
+	uv tool install pre-commit --with pre-commit-uv
 	pre-commit install --hook-type pre-commit
 	pre-commit install --hook-type pre-push
 	make l10n
