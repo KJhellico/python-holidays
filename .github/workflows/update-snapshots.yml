@@ -9,7 +9,7 @@ on:
 jobs:
   update-snapshots:
     name: Update snapshots
-    if: github.repository == 'vacanza/holidays'
+#    if: github.repository == 'vacanza/holidays'
     permissions:
       contents: write
       pull-requests: write
@@ -33,13 +33,13 @@ jobs:
         run: |
           make snapshot
 
-      - uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e
-        with:
-          base: dev
-          body: Automatically generated snapshots update.
-          branch: update-snapshots
-          commit-message: 'Update snapshots [skip ci]'
-          committer: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
-          delete-branch: true
-          title: 'chore: Update snapshots'
-          token: ${{ github.token }}
+#      - uses: peter-evans/create-pull-request@271a8d0340265f705b14b6d32b9829c1cb33d45e
+#        with:
+#          base: dev
+#          body: Automatically generated snapshots update.
+#          branch: update-snapshots
+#          commit-message: 'Update snapshots [skip ci]'
+#          committer: github-actions[bot] <github-actions[bot]@users.noreply.github.com>
+#          delete-branch: true
+#          title: 'chore: Update snapshots'
+#          token: ${{ github.token }}
