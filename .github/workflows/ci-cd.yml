@@ -108,7 +108,7 @@ jobs:
 
       - name: Set up Python ${{ matrix.python-version }}
         run: |
-          uv python install
+          uv python install --managed-python
 
       - name: Install project
         run: |
