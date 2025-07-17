@@ -54,8 +54,8 @@ setup:
 	make package
 
 snapshot:
-	scripts/l10n/generate_mo_files.py
-	scripts/generate_snapshots.py
+	python scripts/l10n/generate_mo_files.py
+	python scripts/generate_snapshots.py
 
 test:
 	python scripts/l10n/generate_mo_files.py
