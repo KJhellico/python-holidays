@@ -27,11 +27,11 @@ doc:
 
 l10n:
 	find . -type f -name "*.pot" -delete
-	scripts/l10n/generate_po_files.py >/dev/null 2>&1
-	scripts/l10n/generate_mo_files.py
+	uv run scripts/l10n/generate_po_files.py >/dev/null 2>&1
+	uv run scripts/l10n/generate_mo_files.py
 
 package:
-	python scripts/l10n/generate_mo_files.py
+	uv run scripts/l10n/generate_mo_files.py
 	uv build
 
 pre-commit:
@@ -54,11 +54,11 @@ setup:
 	make package
 
 snapshot:
-	python scripts/l10n/generate_mo_files.py
-	python scripts/generate_snapshots.py
+	uv run scripts/l10n/generate_mo_files.py
+	uv run scripts/generate_snapshots.py
 
 test:
-	python scripts/l10n/generate_mo_files.py
+	uv run scripts/l10n/generate_mo_files.py
 	pytest --cov=. --cov-config=pyproject.toml --cov-report term-missing --cov-report xml --durations 10 --durations-min=0.75 --dist loadscope --no-cov-on-fail --numprocesses auto
 
 tox:
