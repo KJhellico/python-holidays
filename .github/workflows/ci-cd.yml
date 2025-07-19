@@ -40,6 +40,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@bd01e18f51369d5a26f1651c3cb451d3417e3bba
         with:
+          python-version: '3.13'
           version: '0.7.20'
 
       - name: Run pre-commit
@@ -92,6 +93,8 @@ jobs:
         uses: astral-sh/setup-uv@bd01e18f51369d5a26f1651c3cb451d3417e3bba
         with:
           activate-environment: true
+          # setup-uv doesn't use latest Python 3.9 on macos
+          # https://github.com/astral-sh/setup-uv/issues/212
           python-version: ${{ matrix.python-version }}
           version: '0.7.20'
 
@@ -153,10 +156,6 @@ jobs:
 #          python -m pip install --upgrade pip
 #          python -m pip install -r requirements/build.txt
 #          python -m pip install .
-
-      - name: Install project
-        run: |
-          uv sync --locked --no-default-groups --group build
 
       - name: Build distribution
         run: |

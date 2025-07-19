@@ -31,7 +31,7 @@ l10n:
 	uv run scripts/l10n/generate_mo_files.py
 
 package:
-	uv run scripts/l10n/generate_mo_files.py
+	uv run --no-default-groups --group build scripts/l10n/generate_mo_files.py
 	uv build
 
 pre-commit:
@@ -54,11 +54,11 @@ setup:
 	make package
 
 snapshot:
-	uv run scripts/l10n/generate_mo_files.py
+	uv run --no-default-groups --group build scripts/l10n/generate_mo_files.py
 	uv run scripts/generate_snapshots.py
 
 test:
-	uv run scripts/l10n/generate_mo_files.py
+	uv run --no-default-groups --group build scripts/l10n/generate_mo_files.py
 	pytest --cov=. --cov-config=pyproject.toml --cov-report term-missing --cov-report xml --durations 10 --durations-min=0.75 --dist loadscope --no-cov-on-fail --numprocesses auto
 
 tox:
