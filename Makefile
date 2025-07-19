@@ -41,7 +41,7 @@ release-notes:
 	@scripts/generate_release_notes.py
 
 sbom:
-	uv tool run cyclonedx_py requirements requirements/runtime.txt
+	uv tool run --from cyclonedx-bom cyclonedx-py requirements requirements/runtime.txt
 
 setup:
 	curl -LsSf https://astral.sh/uv/install.sh | sh

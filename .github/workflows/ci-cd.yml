@@ -172,12 +172,12 @@ jobs:
         run: echo "VERSION=$(echo ${{ github.ref_name }} | sed 's/^v//')" >> $GITHUB_ENV
 
       - name: Generate SBOM
-        if: startsWith(github.event.ref, 'refs/tags/v')
+#        if: startsWith(github.event.ref, 'refs/tags/v')
         run: |
           make sbom > holidays-${{ env.VERSION }}-sbom.json
 
       - name: Upload SBOM
-        if: startsWith(github.event.ref, 'refs/tags/v')
+#        if: startsWith(github.event.ref, 'refs/tags/v')
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: sbom
