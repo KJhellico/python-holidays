@@ -413,15 +413,15 @@ class TestIcalExporter(TestCase):
             content_1 = [
                 line
                 for line in file_path_1.read_text().splitlines()
-                if not line.startswith("UID:")
+                if not line.startswith(("UID:", "DTSTAMP:"))
             ]
 
             file_path_2 = Path(valid_path) / "test_calendar_2.ics"
-            self.us_exporter.save_ics(file_path=file_path_2)
+            self.us_exporter.save_ics(file_path=str(file_path_2))
             content_2 = [
                 line
                 for line in file_path_2.read_text().splitlines()
-                if not line.startswith("UID:")
+                if not line.startswith(("UID:", "DTSTAMP:"))
             ]
 
             self.assertEqual(content_1, content_2)
