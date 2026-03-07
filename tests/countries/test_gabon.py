@@ -21,6 +21,17 @@ class TestGabon(CommonCountryTests, TestCase):
     def setUpClass(cls):
         super().setUpClass(Gabon)
 
+    def test_special_holidays(self):
+        self.assertHoliday(
+            "2024-11-14",
+            "2024-11-15",
+            "2024-11-16",
+            "2025-04-11",
+            "2025-04-12",
+            "2025-05-02",
+            "2025-09-27",
+        )
+
     def test_new_years_day(self):
         self.assertHolidayName("Jour de l'an", (f"{year}-01-01" for year in self.full_range))
 
