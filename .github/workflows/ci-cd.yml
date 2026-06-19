@@ -38,6 +38,7 @@ jobs:
         with:
           python-version: ${{ env.DEFAULT_PYTHON_VERSION }}
           version: ${{ env.DEFAULT_UV_VERSION }}
+          enable-cache: false
 
       - name: Install Python
         run: uv python install "$UV_PYTHON"
@@ -47,6 +48,7 @@ jobs:
         with:
           key: pre-commit-${{ runner.os }}-${{ hashFiles('.pre-commit-config.yaml') }}
           path: ~/.cache/pre-commit
+          lookup-only: true
 
       - name: Run pre-commit
         run: uv tool run --with pre-commit-uv pre-commit run --show-diff-on-failure --color=always --all-files
@@ -98,6 +100,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           version: ${{ env.DEFAULT_UV_VERSION }}
+          enable-cache: false
 
       - name: Install Python ${{ matrix.python-version }}
         run: uv python install ${{ matrix.python-version }}
@@ -126,6 +129,7 @@ jobs:
         with:
           python-version: ${{ env.DEFAULT_PYTHON_VERSION }}
           version: ${{ env.DEFAULT_UV_VERSION }}
+          enable-cache: false
 
       - name: Install Python
         run: uv python install "$UV_PYTHON"
@@ -144,7 +148,7 @@ jobs:
 
       - name: Set version
         if: startsWith(github.event.ref, 'refs/tags/v')
-        run: echo "VERSION=$(echo ${{ github.ref_name }} | sed 's/^v//')" >> $GITHUB_ENV
+        run: echo "VERSION=$(echo ${GITHUB_REF_NAME} | sed 's/^v//')" >> $GITHUB_ENV
 
       - name: Generate SBOM
         if: startsWith(github.event.ref, 'refs/tags/v')
@@ -176,6 +180,7 @@ jobs:
         with:
           python-version: ${{ env.DEFAULT_PYTHON_VERSION }}
           version: ${{ env.DEFAULT_UV_VERSION }}
+          enable-cache: false
 
       - name: Install Python
         shell: bash
@@ -211,6 +216,7 @@ jobs:
         with:
           python-version: ${{ env.DEFAULT_PYTHON_VERSION }}
           version: ${{ env.DEFAULT_UV_VERSION }}
+          enable-cache: false
 
       - name: Install Python
         run: uv python install "$UV_PYTHON"
@@ -302,5 +308,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload --repo vacanza/holidays ${{ github.ref_name }} dist/*
-          gh release upload --repo vacanza/holidays ${{ github.ref_name }} holidays-*-sbom.json
+          gh release upload --repo vacanza/holidays ${GITHUB_REF_NAME} dist/*
+          gh release upload --repo vacanza/holidays ${GITHUB_REF_NAME} holidays-*-sbom.json
